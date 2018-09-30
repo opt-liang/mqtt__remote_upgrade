@@ -144,6 +144,8 @@ void MqttSubTopicState( void ){
             MqttSubTopic( (char*)MQTT_ID );
         }
 	}else{
+        void CheckServerUpgradeStateAck( void );
+        CheckServerUpgradeStateAck();   
         if( PING_TIMEOUT_COUNT < MQTT_PING_TIMEOUT(5) * PING_TIME_MULTIPLE &&\
             MQTT_SEND_QUEUE_COUNT < MQTT_SEND_QUEUE_MAX_COUNT ){
             ListCheck( MQTT_QUEUE_LIST );
