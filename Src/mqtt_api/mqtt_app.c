@@ -8,6 +8,8 @@
 #include "common.h"
 #include "encrypt.h"
 
+#define TEST_MQTT_SEND false
+
 #define PING_TIME_INTERVAL      100
 #define PING_TIME_MULTIPLE      (1000/PING_TIME_INTERVAL)
 
@@ -161,9 +163,11 @@ void MqttCheckPingState( TimerHandle_t xTimer ){
         
         PING_TIMEOUT_COUNT++;
         
-//        if( PING_TIMEOUT_COUNT < MQTT_PING_TIMEOUT(5) * PING_TIME_MULTIPLE && MQTT_SEND_QUEUE_COUNT < MQTT_SEND_QUEUE_MAX_COUNT ){
-//            MqttTestSend();
-//        }
+        #if TEST_MQTT_SEND
+        if( PING_TIMEOUT_COUNT < MQTT_PING_TIMEOUT(5) * PING_TIME_MULTIPLE && MQTT_SEND_QUEUE_COUNT < MQTT_SEND_QUEUE_MAX_COUNT ){
+            MqttTestSend();
+        }
+        #endif
         
         if( ( PING_TIMEOUT_COUNT % ( PING_TIME_MULTIPLE )  == 0x00 ) ){
             MqttSubTopicState();
