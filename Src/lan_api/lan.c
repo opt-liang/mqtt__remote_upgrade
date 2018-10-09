@@ -82,7 +82,7 @@ const uint8_t GetLanConfigCmd[ 8 ][ 5 ] = {\
 };
 
 bool GetLanRealParameter( uint8_t *lan_parameter ){
-
+    bool status = true;
     LanEnterConfig();
     
     uint8_t cycle_count = 0;
@@ -112,17 +112,16 @@ bool GetLanRealParameter( uint8_t *lan_parameter ){
             cycle_count ++;
             if( cycle_count >= 10 ){
                 LAN_INFO( "Get LAN PARAMETER TIMES EXCEED 5 times\r\n" );
-                return false;
+                status = false;
+                goto exit;
             }
             goto RESEND;
         }
     }
-
-    LanExitConfig();
-    
     LAN_INFO( "GET LAN PARAMETER SUCCESSFUL\r\n" );
-
-    return true;
+exit:
+    LanExitConfig();
+    return status;
 }
 
 const uint8_t SetLanConfigCmd[ 9 ][ 5 ] = {\
@@ -138,7 +137,7 @@ const uint8_t SetLanConfigCmd[ 9 ][ 5 ] = {\
 };
 
 bool SetLanParameter( uint8_t *lan_flash_parameter ){
-    
+    bool status = true;
     LanEnterConfig();
     
     uint8_t cycle_count = 0;
@@ -180,17 +179,16 @@ bool SetLanParameter( uint8_t *lan_flash_parameter ){
             cycle_count ++;
             if( cycle_count >= 10 ){
                 LAN_INFO( "LAN SET PARAMETER TIMES EXCEED 5 times\r\n" );
-                return false;
+                status = false;
+                goto exit;
             }
             goto RESEND;
         }
     }
-    
+    LAN_INFO( "Set LAN PARAMETER SUCCESSFUL\r\n" );    
+    exit:
     LanExitConfig();
-    
-    LAN_INFO( "Set LAN PARAMETER SUCCESSFUL\r\n" );
-    
-    return true;
+    return status;
 }
 
 bool CheckCh9121ConfigMsg( void ){
